@@ -10,6 +10,7 @@ namespace GMail_FinalTask.PageObject
         private readonly By nextButton = By.XPath("//*[contains(@id,'Next')]");
         private readonly By profileIdentifier = By.CssSelector("#profileIdentifier");
         private readonly By useAnotherAccoutnButton = By.XPath("//div[contains(text(),'Use another account')]");
+        private readonly By lastMessage = By.XPath("//tr[@class = 'zA zE']//span[@class = 'y2']");
 
         [FindsBy(How = How.XPath, Using = "//input[@type = 'email']")]
         private readonly IWebElement UsernameTextField;
@@ -25,7 +26,9 @@ namespace GMail_FinalTask.PageObject
         public void Login(string username, string password)
         {
             if (PasswordTextField.Displayed)
+            {
                 UseAnotherAccount(username, password);
+            }
 
             usernameTextField.WaitUntilVisible().SendKeys(username);
             NextButton.Click();

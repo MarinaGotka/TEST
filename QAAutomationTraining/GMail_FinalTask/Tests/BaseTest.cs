@@ -9,7 +9,8 @@ namespace GMail_FinalTask.Tests
     {
         public BaseTest()
         {
-            DriverFactory.GetDriver().Navigate().GoToUrl("https://www.gmail.com");
+            DriverFactory.GetDriver().Navigate().GoToUrl("http://www.gmail.com");
+            DriverFactory.GetDriver().Manage().Window.Maximize();
         }
 
         [TearDown]
