@@ -9,7 +9,7 @@ namespace GMail_FinalTask.PageObject
         private readonly By usernameTextField = By.XPath("//input[@type = 'email']");
         private readonly By nextButton = By.XPath("//*[contains(@id,'Next')]");
         private readonly By profileIdentifier = By.CssSelector("#profileIdentifier");
-        private readonly By useAnotherAccoutnButton = By.XPath("//div[contains(text(),'Use another account')]");
+        private readonly By useAnotherAccoutnButton = By.XPath("//div[@class][contains(text(),'Use another account')]");
         private readonly By lastMessage = By.XPath("//tr[@class = 'zA zE']//span[@class = 'y2']");
 
         [FindsBy(How = How.XPath, Using = "//input[@type = 'email']")]
@@ -21,13 +21,17 @@ namespace GMail_FinalTask.PageObject
         [FindsBy(How = How.XPath, Using = "//*[contains(@id,'Next')]")]
         private readonly IWebElement NextButton;
 
-        public bool IsAt() => NextButton.Displayed;
+        public bool IsAt() => nextButton.WaitUntilVisible().Displayed;
 
         public void Login(string username, string password)
         {
-            if (PasswordTextField.Displayed)
+            if (passwordTextField.IsDisplayed())
             {
-                UseAnotherAccount(username, password);
+                UseAnotherAccount();
+            }
+            else if (!usernameTextField.IsDisplayed())
+            {
+                ClickUseAnotherAccount();
             }
 
             usernameTextField.WaitUntilVisible().SendKeys(username);
@@ -37,9 +41,14 @@ namespace GMail_FinalTask.PageObject
             (new HomePage()).WaitLoadingPage();
         }
 
-        public void UseAnotherAccount(string username, string password)
+        public void UseAnotherAccount()
         {
             profileIdentifier.WaitUntilVisible().Click();
+            useAnotherAccoutnButton.WaitUntilVisible().Click();
+        }
+
+        public void ClickUseAnotherAccount()
+        {
             useAnotherAccoutnButton.WaitUntilVisible().Click();
         }
     }
