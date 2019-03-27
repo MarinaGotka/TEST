@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\Folders.cs" />
     <Compile Include="PageObject\BasePage.cs" />
     <Compile Include="PageObject\HomePage.cs" />
     <Compile Include="Tests\BaseTest.cs" />

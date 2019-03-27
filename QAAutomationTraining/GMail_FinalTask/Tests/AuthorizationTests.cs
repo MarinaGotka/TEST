@@ -1,4 +1,5 @@
-﻿using GMail_FinalTask.PageObject;
+﻿using GMail_FinalTask.Enum;
+using GMail_FinalTask.PageObject;
 using NUnit.Framework;
 
 namespace GMail_FinalTask.Tests
@@ -6,7 +7,7 @@ namespace GMail_FinalTask.Tests
     [TestFixture]
     public class AuthorizationTests : BaseTest
     {
-        private const string user1 = "seleniumtests10";
+        private const string user1 = "seleniumtests30";
         private const string user2 = "seleniumtestsnew20";
         private const string password = "060788avavav";
 
@@ -14,7 +15,7 @@ namespace GMail_FinalTask.Tests
         HomePage homePage = new HomePage();
 
         [TestCase("seleniumtestsnew20", "060788avavav")]
-        [TestCase("seleniumtests10", "060788avavav")]
+        [TestCase("seleniumtests30", "060788avavav")]
         public void LoginTest(string username, string password)
         {
             loginPage.Login(username, password);
@@ -36,7 +37,7 @@ namespace GMail_FinalTask.Tests
         }
 
         [Test]
-        public void SendEmailTo()
+        public void SendEmailToTest()
         {
             loginPage.Login(user1, password);
 
@@ -47,6 +48,30 @@ namespace GMail_FinalTask.Tests
             loginPage.Login(user2, password);
 
             Assert.True(homePage.IsEmailReceived(), "Email is not received");
+        }
+
+        [Test]
+        public void SentEmailApearedInSentFolderTest()
+        {
+            loginPage.Login(user1, password);
+
+            Assert.True(homePage.IsLoggedIn(), "User is not logged out");
+
+            homePage.SentEmail(user2);
+
+            Assert.True(homePage.IsEmailExistInFolder(Folders.Sent), "Sent email is not apeared in Sent folder");
+        }
+
+        [Test]
+        public void DeletedEmailApearedInTrashFolderTest()
+        {
+            loginPage.Login(user1, password);
+
+            Assert.True(homePage.IsLoggedIn(), "User is not logged out");
+
+            homePage.DeleteLastEmail();
+
+            Assert.True(homePage.IsEmailExistInFolder(Folders.Trash), "Sent email is not apeared in Sent folder");
         }
     }
 }

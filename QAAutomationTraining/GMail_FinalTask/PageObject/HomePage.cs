@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using GMail_FinalTask.Enum;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
 namespace GMail_FinalTask.PageObject
@@ -29,8 +30,26 @@ namespace GMail_FinalTask.PageObject
         [FindsBy(How = How.XPath, Using = "//*[contains(@data-tooltip,'Send')]")]
         private IWebElement SendButton;
 
+        [FindsBy(How = How.XPath, Using = "//div[@data-tooltip='Sent']")]
+        private IWebElement SentFolder;
+
+        [FindsBy(How = How.XPath, Using = "//div[@data-tooltip='Trash']")]
+        private IWebElement TrashFolder;
+
         [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA zE']//span[@class = 'y2']")]
-        private readonly IWebElement LastMessage;
+        private readonly IWebElement LastInboxMessage;
+
+        [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA yO']")]
+        private readonly IWebElement LastSentMessage;
+
+        [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA yO'][@tabindex='-1']")]
+        private readonly IWebElement LastTrashMessage;
+
+        [FindsBy(How = How.XPath, Using = "//*[@id=':4']/div[3]/div[1]/div/div[2]/div[3]")]
+        private readonly IWebElement DeleteIcon;
+
+        [FindsBy(How = How.XPath, Using = "//*[@class='CJ'][contains(text(),'More')]")]
+        private readonly IWebElement MoreButton;
 
         public bool IsLoggedIn() => AccountIcon.Displayed;
 
@@ -56,9 +75,33 @@ namespace GMail_FinalTask.PageObject
             _messageSentPopup.WaitUntilVisible();
         }
 
+        public void DeleteLastEmail()
+        {
+            LastInboxMessage.Click();
+            DeleteIcon.Click();
+        }
+
         public bool IsEmailReceived()
         {
-            return LastMessage.Text == emailText;
+            return IsEmailExistInFolder(Folders.Inbox);
+        }
+
+        public bool IsEmailExistInFolder(Folders folder)
+        {
+            switch (folder)
+            {
+                case Folders.Sent:
+                    SentFolder.Click();
+                    return LastSentMessage.Text == emailText;
+                case Folders.Trash:
+                    MoreButton.Click();
+                    TrashFolder.Click();
+                    return LastTrashMessage.Text == emailText;
+                case Folders.Inbox:
+                    return LastInboxMessage.Text == emailText;
+                default:
+                    throw new NoSuchElementException("No such folder");
+            }
         }
     }
 }
