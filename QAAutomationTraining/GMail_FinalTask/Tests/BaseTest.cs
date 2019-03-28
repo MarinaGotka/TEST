@@ -1,4 +1,5 @@
-﻿using GMail_FinalTask.PageObject;
+﻿using Allure.Commons;
+using GMail_FinalTask.PageObject;
 using GMail_FinalTask.WebDriver;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -7,7 +8,7 @@ using System.IO;
 
 namespace GMail_FinalTask.Tests
 {
-    public class BaseTest : IDisposable
+    public class BaseTest : AllureReport, IDisposable
     {
         public BaseTest()
         {

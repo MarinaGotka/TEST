@@ -1,36 +1,36 @@
 ﻿using GMail_FinalTask.Enum;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+using System.Threading;
+using GMail_FinalTask.WebDriver;
 
 namespace GMail_FinalTask.PageObject
 {
     public class HomePage : BasePage
     {
         private const string emailText = "Hello";
+        private const string lastSentMessageString = "//tr[@class = 'zA yO']//span[contains(text(),{0})]";
 
         private static readonly By _accountIcon = By.XPath("//span[@class = 'gb_ya gbii']");
         private static readonly By _signOutButton = By.CssSelector("#gb_71");
-        private static readonly By _messageSentPopup = By.XPath("//*[contains(text(),'Message sent')]");
+        private static readonly By _toTextArea = By.XPath("//textarea[@name='to']");
 
         [FindsBy(How = How.XPath, Using = "//span[@class = 'gb_ya gbii']")]
         private readonly IWebElement AccountIcon;
 
-        [FindsBy(How = How.XPath, Using = "//*[contains(text(),'Выйти')]")]
+        [FindsBy(How = How.CssSelector, Using = "#gb_71")]
         private readonly IWebElement SignOutButton;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='z0']/div[@role='button']")]
         private IWebElement NewEmailButton;
 
-        [FindsBy(How = How.XPath, Using = "//textarea[@name='to']")]
-        private IWebElement ToTextArea;
-
         [FindsBy(How = How.XPath, Using = "//div[@role='textbox']")]
         private IWebElement TextArea;
 
-        [FindsBy(How = How.XPath, Using = "//*[contains(@data-tooltip,'Send')]")]
+        [FindsBy(How = How.XPath, Using = "//*[@class='T-I J-J5-Ji aoO T-I-atl L3']")]
         private IWebElement SendButton;
 
-        [FindsBy(How = How.XPath, Using = "//div[@data-tooltip='Sent']")]
+        [FindsBy(How = How.XPath, Using = "//a[contains(@href,'sent')]")]
         private IWebElement SentFolder;
 
         [FindsBy(How = How.XPath, Using = "//div[@data-tooltip='Trash']")]
@@ -39,16 +39,13 @@ namespace GMail_FinalTask.PageObject
         [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA zE']//span[@class = 'y2']")]
         private readonly IWebElement LastInboxMessage;
 
-        [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA yO']")]
-        private readonly IWebElement LastSentMessage;
-
-        [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA yO'][@tabindex='-1']")]
+        [FindsBy(How = How.XPath, Using = "//tr[@class = 'zA zE']//span[@class='y2']")]
         private readonly IWebElement LastTrashMessage;
 
-        [FindsBy(How = How.XPath, Using = "//*[@id=':4']/div[3]/div[1]/div/div[2]/div[3]")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='T-I J-J5-Ji nX T-I-ax7 T-I-Js-Gs mA']//*[@class='ar9 T-I-J3 J-J5-Ji']")]
         private readonly IWebElement DeleteIcon;
 
-        [FindsBy(How = How.XPath, Using = "//*[@class='CJ'][contains(text(),'More')]")]
+        [FindsBy(How = How.XPath, Using = "//*[@class='CJ']")]
         private readonly IWebElement MoreButton;
 
         public bool IsLoggedIn() => AccountIcon.Displayed;
@@ -69,16 +66,16 @@ namespace GMail_FinalTask.PageObject
         public void SentEmail(string receiver)
         {
             NewEmailButton.Click();
-            ToTextArea.SendKeys(receiver + "@gmail.com");
+            _toTextArea.WaitUntilVisible().SendKeys(receiver + "@gmail.com");
             TextArea.SendKeys(emailText);
             SendButton.Click();
-            _messageSentPopup.WaitUntilVisible();
+            Thread.Sleep(4000);
         }
 
         public void DeleteLastEmail()
         {
             LastInboxMessage.Click();
-            DeleteIcon.Click();
+            DeleteIcon.ClickJS();
         }
 
         public bool IsEmailReceived()
@@ -92,13 +89,13 @@ namespace GMail_FinalTask.PageObject
             {
                 case Folders.Sent:
                     SentFolder.Click();
-                    return LastSentMessage.Text == emailText;
+                    return DriverFactory.GetDriver().FindElement(By.XPath(string.Format(lastSentMessageString, emailText))).Displayed;
                 case Folders.Trash:
                     MoreButton.Click();
                     TrashFolder.Click();
-                    return LastTrashMessage.Text == emailText;
+                    return LastTrashMessage.Text.Contains(emailText);
                 case Folders.Inbox:
-                    return LastInboxMessage.Text == emailText;
+                    return LastInboxMessage.Text.Contains(emailText);
                 default:
                     throw new NoSuchElementException("No such folder");
             }

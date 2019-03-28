@@ -16,6 +16,12 @@ namespace GMail_FinalTask
             return DriverFactory.GetDriver().FindElement(locator);
         }
 
+        public static void ClickJS(this IWebElement element)
+        {
+            ((IJavaScriptExecutor)DriverFactory.GetDriver()).ExecuteScript("arguments[0].click();", element);
+        }
+
+
         public static bool IsDisplayed(this By locator, int secondsToWait = 5)
         {
             try
