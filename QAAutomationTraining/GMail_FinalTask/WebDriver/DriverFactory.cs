@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System.Threading;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 namespace GMail_FinalTask.WebDriver
 {
