@@ -17,6 +17,6 @@ namespace GMail_FinalTask.PageObject
         public void WaitUntilDisplayed(By locator)
         {
             WebElementExtensions.WaitUntilVisible(locator);
-        }    
+        }
     }
 }

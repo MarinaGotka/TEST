@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System.Threading;
+using GMail_FinalTask.Enum;
+using GMail_FinalTask.Tests;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 
@@ -13,7 +15,10 @@ namespace GMail_FinalTask.WebDriver
         {
             if (ThreadDriver.Value != null) return ThreadDriver.Value;
 
-            ThreadDriver.Value = new ChromeDriver();
+            if (BaseTest.browser == Browsers.Chrome)
+                ThreadDriver.Value = new ChromeDriver();
+            else if (BaseTest.browser == Browsers.Firefox)
+                ThreadDriver.Value = new FirefoxDriver();
 
             return ThreadDriver.Value;
         }

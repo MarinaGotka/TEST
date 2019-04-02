@@ -8,14 +8,21 @@ namespace GMail_FinalTask.Tests
 {
     [TestFixture]
     [AllureSuite("Tests for GMail.com")]
+    [TestFixture(Browsers.Chrome, Strategies.SauceLabs)]
     public class AuthorizationTests : BaseTest
     {
         private const string user1 = "seleniumtests30";
         private const string user2 = "seleniumtestsnew20";
         private const string password = "060788avavav";
-        private LoginPage loginPage = new LoginPage();
-        private HomePage homePage = new HomePage();
+        private LoginPage loginPage;
+        private HomePage homePage;
 
+        public AuthorizationTests(Browsers browser, Strategies strategy) : base(browser, strategy)
+        {
+            loginPage = new LoginPage();
+            homePage = new HomePage();
+        }
+        
         [AllureTest("Verifies Login session for gmail.com.")]
         [AllureSeverity(SeverityLevel.Critical)]
         [AllureOwner("Marina Gotka")]

@@ -18,9 +18,6 @@ namespace GMail_FinalTask.PageObject
         [FindsBy(How = How.XPath, Using = "//span[@class = 'gb_ya gbii']")]
         private readonly IWebElement AccountIcon;
 
-        [FindsBy(How = How.CssSelector, Using = "#gb_71")]
-        private readonly IWebElement SignOutButton;
-
         [FindsBy(How = How.XPath, Using = "//div[@class='z0']/div[@role='button']")]
         private IWebElement NewEmailButton;
 

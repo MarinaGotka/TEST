@@ -11,13 +11,7 @@ namespace GMail_FinalTask.PageObject
         private readonly By profileIdentifier = By.CssSelector("#profileIdentifier");
         private readonly By useAnotherAccoutnButton = By.XPath("//*[@class='M8HEDc eARute cd29Sd bxPAYd W7Aapd znIWoc']");
         private readonly By lastMessage = By.XPath("//tr[@class = 'zA zE']//span[@class = 'y2']");
-
-        [FindsBy(How = How.XPath, Using = "//input[@type = 'email']")]
-        private readonly IWebElement UsernameTextField;
-
-        [FindsBy(How = How.XPath, Using = "//input[@type = 'password']")]
-        private readonly IWebElement PasswordTextField;
-
+        
         [FindsBy(How = How.XPath, Using = "//*[contains(@id,'Next')]")]
         private readonly IWebElement NextButton;
 

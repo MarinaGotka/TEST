@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Allure, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,7 +84,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\Browsers.cs" />
     <Compile Include="Enum\Folders.cs" />
+    <Compile Include="Enum\Strategies.cs" />
     <Compile Include="PageObject\BasePage.cs" />
     <Compile Include="PageObject\HomePage.cs" />
     <Compile Include="Tests\BaseTest.cs" />
